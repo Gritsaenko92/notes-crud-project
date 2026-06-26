@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ object.title }} - Деталі</title>
+  </head>
+  <body>
+    <h1>Деталі нотатки та редагування</h1>
+
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">💾 Зберегти зміни</button>
+    </form>
+
+    <hr />
+    <a
+      href="{% url 'note_delete' object.pk %}"
+      style="color: red; font-weight: bold"
+      >🗑️ Видалити цю нотатку</a
+    >
+    <br /><br />
+    <a href="{% url 'note_list' %}">↩️ Назад до списку</a>
+  </body>
+</html>

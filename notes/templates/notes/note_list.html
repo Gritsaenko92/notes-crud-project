@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Мої Нотатки</title>
+  </head>
+  <body>
+    <h1>Блокнот Нотаток</h1>
+    <a href="{% url 'note_create' %}">➕ Створити нотатку</a>
+    <hr />
+
+    <h3>Пошук та Фільтрація</h3>
+    <form method="get" action="">
+      <input
+        type="text"
+        name="search"
+        placeholder="Пошук за назвою..."
+        value="{{ request.GET.search }}"
+      />
+      <input
+        type="text"
+        name="category"
+        placeholder="Категорія..."
+        value="{{ request.GET.category }}"
+      />
+
+      <select name="has_reminder">
+        <option value="">Усі нагадування</option>
+        <option
+          value="yes"
+          {%
+          if
+          request.GET.has_reminder=""
+          ="yes"
+          %}selected{%
+          endif
+          %}
+        >
+          З нагадуванням
+        </option>
+        <option
+          value="no"
+          {%
+          if
+          request.GET.has_reminder=""
+          ="no"
+          %}selected{%
+          endif
+          %}
+        >
+          Без нагадування
+        </option>
+      </select>
+
+      <button type="submit">Застосувати</button>
+      <a href="{% url 'note_list' %}">Скинути фільтри</a>
+    </form>
+    <hr />
+
+    <h2>Список нотаток</h2>
+    <ul>
+      {% for note in notes %}
+      <li>
+        <strong
+          ><a href="{% url 'note_detail' note.pk %}"
+            >{{ note.title }}</a
+          ></strong
+        >
+        {% if note.category %}
+    | Категорія: {{ note.category }}
+{% endif %}
+{% if note.reminder_at %}
+    | 🔔 {{ note.reminder_at }}
+{% endif %}
+      </li>
+      {% empty %}
+      <li>Нотаток поки немає або нічого не знайдено за фільтрами.</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
